@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * @author Artsemi Novikau.
+ * @author Andrei.
  * @version 1.0
  * A validator for Ant buildfile.
  */
