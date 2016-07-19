@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Buildfile Validator" default="main">
+    <property file="build.properties"/>
+
+    <taskdef name="buildfilevalidator"
+             classname="${buildvalidator}"
+             classpath="${build}"/>
+
+    <target name="validate-buildfile">
+        <buildfilevalidator checkdepends="true" checkdefault="true" checknames="true">
+            <buildfile location="build.xml" />
+            <buildfile location="build2.xml" />
+        </buildfilevalidator>
+    </target>
+
+    <target name="main" depends="validate-buildfile">
+    </target>
+</project>

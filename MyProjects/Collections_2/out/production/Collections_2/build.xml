@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<project name="Collections_2" default="info">
+   
+   <property name="projdir" value="collections2"/>
+   <property name="src.dir" value="${projdir}\src"/>
+   <property name="dest.dir" value="${projdir}\build"/>
+   <property name="dest.jar" value="${projdir}\collections2.jar"/>
+   <property name="mainclass" value="Runner"/>
+
+	<macrodef name="compile-pack-run">
+		<sequential>
+			<!-- code -->
+			<echo>Starting compilation</echo>
+		      <mkdir dir="${dest.dir}" />
+		      <javac srcdir="${src.dir}"
+		         destdir="${dest.dir}"
+		      />
+		      <echo>Compilation complete</echo>
+		      <echo></echo>
+
+
+		      <echo>Starting making jar</echo>
+		      <copy todir="${dest.dir}">
+		      	<fileset dir="${projdir}\src">
+		      		<include name="**/*.txt"/>
+		      	</fileset>
+		      </copy>
+		      <jar destfile="${dest.jar}">
+		      	<fileset dir="${dest.dir}">
+		   			<include name="**/*.class"/>
+		   			<include name="**/*.txt"/>
+		   			<exclude name="**/*Stub*"/>
+				</fileset>
+				<manifest>
+		    		<attribute name="Main-Class" value="${mainclass}"/>
+		  		</manifest>
+		      </jar>
+		      <echo>Jar file created</echo>
+		      <echo></echo>
+
+
+		      <echo>Running the jar...</echo>
+		      <java jar="${dest.jar}" fork="true">
+		      	<arg value="-h"/>
+		      </java>
+		      <echo>Jar started</echo>
+		      <echo></echo>
+
+		</sequential>
+	</macrodef>
+
+
+   
+   <target name="info">
+      <echo>Apache Ant version is ${ant.version} </echo>
+      <echo></echo>
+      
+      <compile-pack-run/>
+
+      
+      	
+   </target>
+
+
+</project>

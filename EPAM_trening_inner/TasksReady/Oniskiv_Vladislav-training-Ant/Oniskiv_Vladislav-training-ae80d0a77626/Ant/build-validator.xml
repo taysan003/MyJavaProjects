@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<project name="BuildFileValidator" basedir="." default="main">
+
+    <property name="src" location="src/by/training"/>
+    <property name="buildSrc" location="build/classes"/>
+    <property name="nameClass" value="by.training.ant.validator.BuildFileValidator"/>
+    <property name="nameBuild" value="build-project.xml"/>
+    <property name="nameBuildValid" value="build-validator.xml"/>
+
+    <taskdef name="customm" classname="${nameClass}" classpath="${buildSrc}" />
+
+    <target name="validate-buildfile">
+        <customm checkdepends="true" checkdefault="true" checknames="true">
+            <buildfile location="${nameBuild}" />
+            <buildfile location="${nameBuildValid}" />
+        </customm>
+    </target>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${buildSrc}"/>
+    </target>
+
+    <target name="compile">
+        <javac srcdir="${src}" destdir="${buildSrc}" />
+    </target>
+
+    <target name="main" depends="clean, init, compile, validate-buildfile">
+    </target>
+
+</project>

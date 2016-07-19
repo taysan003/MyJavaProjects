@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<project name="taskAnt" basedir="." default="main">
+
+    <property name="src" location="src/by/training"/>
+    <property name="buildSrc" location="build/classes"/>
+    <property name="jarFile" location="jarFile"/>
+    <property name="nameProject" value="taskAnt.jar"/>
+    <property name="mainClass" value="by.training.ant.Main"/>
+
+    <macrodef name="buildProject">
+        <attribute name="classesDir"/>
+        <attribute name="jarDir"/>
+        <attribute name="nameJar"/>
+        <attribute name="mainClass"/>
+        <element name="projectSrcDir"/>
+        <sequential>
+            <delete dir="build"/>
+            <delete dir="@{jarDir}"/>
+
+            <mkdir dir="@{classesDir}"/>
+            <mkdir dir="@{jarDir}"/>
+
+            <javac destdir="@{classesDir}">
+                <src><projectSrcDir/></src>
+            </javac>
+
+            <jar destfile="@{jarDir}/@{nameJar}" basedir="@{classesDir}">
+                <manifest>
+                    <attribute name="Main-Class"
+                               value="@{mainClass}"/>
+                </manifest>
+            </jar>
+
+            <java jar="@{jarDir}/@{nameJar}" fork="true"/>
+        </sequential>
+    </macrodef>
+
+    <target name="build-project">
+        <buildProject classesDir="${buildSrc}"
+                      jarDir="${jarFile}"
+                      nameJar="${nameProject}"
+                      mainClass="${mainClass}">
+            <projectSrcDir>
+                <dirset dir="${src}" />
+            </projectSrcDir>
+        </buildProject>
+    </target>
+
+    <target name="main" depends="build-project">
+    </target>
+</project>

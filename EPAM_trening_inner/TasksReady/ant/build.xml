@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant java project" default="main" basedir=".">
+	<property file="build.properties"/>
+	
+	<macrodef name="buildproject">
+		<attribute name="classesdir"/>
+		<attribute name="jardir"/>
+		<attribute name="mainclass"/>
+		<element name="projectsrcdir"/>
+		<element name="projectclasspath"/>
+		<sequential>
+			<delete dir="@{classesdir}"/>
+			
+			<mkdir dir="@{classesdir}"/>
+			<javac destdir="@{classesdir}" includeantruntime="false">
+				<src>
+					<projectsrcdir/>
+				</src>
+                <classpath>
+                    <projectclasspath/>
+                </classpath>
+			</javac>
+			<jar basedir="@{classesdir}" destfile="@{jardir}/${jarname}">
+				<manifest>
+					<attribute name="Main-Class" value="@{mainclass}"/>
+				</manifest>
+			</jar>
+			<java jar="@{jardir}/${jarname}" fork="true">
+                <classpath>
+                    <projectclasspath/>
+                </classpath>
+			</java>
+		</sequential>
+	</macrodef>
+
+	<target name="build-project">
+		<buildproject classesdir="${build}"
+					  jardir="bin"
+					  mainclass="${mainclass}">
+			<projectsrcdir>
+				<path path="${src}"/>	
+			</projectsrcdir>
+			<projectclasspath>
+				<path>
+                    <fileset dir="${classpath}" includes="**/*.jar"/>
+                </path>
+			</projectclasspath>
+		</buildproject>
+	</target>
+
+	<target name="main" depends="build-project">
+	</target>
+</project>

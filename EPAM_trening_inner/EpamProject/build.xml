@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="EpamProject" default="main">
+    <property name="catalog" value="newFolder" />
+    <!--
+        Declaration of the buildproject macro-function should be there
+        ...
+    -->
+    <macrodef name="testing">
+        <attribute name="v" default="NOT SET"/>
+        <element name="some-tasks" optional="yes"/>
+        <sequential>
+            <echo>v is @{v}</echo>
+            <some-tasks/>
+        </sequential>
+    </macrodef>
+
+    <testing v="This is v">
+        <some-tasks>
+            <echo>this is a test</echo>
+        </some-tasks>
+    </testing>
+
+
+
+
+    <target name="clear">
+        <delete dir="${catalog}" />
+    </target>
+
+    <target name="build-project" >
+        <mkdir dir = "src/${catalog}" />
+        <mkdir dir = "src/${catalog}/compiledClasses" />
+        <mkdir dir = "src/${catalog}/jarFiles" />
+        <mkdir dir = "src/${catalog}/mainFunction" />
+        <mkdir dir = "src/${catalog}/sources" />
+        <mkdir dir = "src/${catalog}/dependencies" />
+        <javac destdir="src/${catalog}/compiledClasses">
+            <src path="src/Ant" />
+        </javac>
+
+    </target>
+    <target name="new.jar" depends="build-project">
+        <jar destfile="src/${catalog}/jarFiles/myProgram.jar">
+            <fileset dir = "src/${catalog}/compiledClasses">
+                    <include name="**/*.class" />
+            </fileset>
+            <manifest>
+                <attribute name = "Main-class" value="Ant.Main" />
+            </manifest>
+
+        </jar>
+    </target>
+
+        <!--<buildproject classesdir="A directory to place compiled classes"
+                      jardir="A directory to place a jar file"
+                      mainclass="A full name of a class with the main function">
+            <projectsrcdir>
+                <fileset dir="A Java sources" />
+            </projectsrcdir>
+            <projectclasspath>
+                <fileset dir="A directory with the project's dependencies" />
+            </projectclasspath>
+        </buildproject>-->
+
+
+    <target name="main" depends="new.jar">
+    </target>
+
+</project>
